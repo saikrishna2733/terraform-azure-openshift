@@ -5,15 +5,15 @@ data "template_file" "scale_up" {
 
 resource "null_resource" "scale_up" {
   
-  count = "${var.scale_up ? 1 : 0}"
+  count = var.scale_up ? 1 : 0
 
   provisioner "file" {
-    content     = "${data.template_file.node_config_playbook.rendered}"
+    content     = data.template_file.node_config_playbook.rendered
     destination = "~/node-config-playbook.yaml"
   }
 
   provisioner "file" {
-    content     = "${data.template_file.scale_up.rendered}"
+    content     = data.template_file.scale_up.rendered
     destination = "~/scale-up.sh"
   }
 
@@ -27,8 +27,8 @@ resource "null_resource" "scale_up" {
 
   connection {
     type        = "ssh"
-    host        = "${module.node_bastion.ip_address}"
-    user        = "${var.openshift_vm_admin_user}"
+    host        = module.node_bastion.ip_address
+    user        = var.openshift_vm_admin_user
     private_key = "${file("${path.module}/../keys/bastion.key")}"
   }
 
