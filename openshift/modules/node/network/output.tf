@@ -1,5 +1,5 @@
 output "subnet_id" {
-  value = "${azurerm_subnet.node.id}"
+  value = azurerm_subnet.node.id
 }
 
 output "network_interface_ids" {
