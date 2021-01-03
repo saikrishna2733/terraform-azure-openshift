@@ -9,5 +9,5 @@ variable "azure_location" {}
 variable "resource_group_name" {}
 
 variable "rules" {
-  type = "list"
+  type = list
 }
