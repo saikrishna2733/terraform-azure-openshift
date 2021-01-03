@@ -17,7 +17,7 @@ module "network" {
   virtual_network_name       = var.network_name
   expose_node                = var.expose_node
   enable_scaling             = var.enable_scaling
-  node_count                 = var.count
+  node_count                 = var.az-count
   subnet_address_prefix      = var.subnet_address_prefix
   lb_backend_address_pool_id = module.scaling.lb_backend_address_pool_id
   ip_address_id              = module.public_ip.id
@@ -25,20 +25,20 @@ module "network" {
 }
 
 resource "azurerm_storage_container" "node" {
-  count                 = var.count
-  name                  = var.name}-${count.index + 1}"
+  count                 = var.az-count
+  name                  = "${var.name}-${count.index + 1}"
   resource_group_name   = var.resource_group_name
   storage_account_name  = var.storage_account_name
   container_access_type = "private"
 }
 
 resource "azurerm_virtual_machine" "node" {
-  count                 = var.count}"
+  count                 = var.az-count
   name                  = "${var.name}${count.index + 1}"
   location              = var.azure_location
   resource_group_name   = var.resource_group_name
   availability_set_id   = module.scaling.availability_set_id
-  network_interface_ids = [element(split(",", module.network.network_interface_ids), count.index)}"]
+  network_interface_ids = element(split(",", module.network.network_interface_ids), count.index)
   vm_size               = var.size
 
   storage_image_reference {

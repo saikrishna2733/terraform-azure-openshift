@@ -4,7 +4,7 @@ variable "name" {
 
 variable "platform_name" {}
 
-variable "count" {}
+variable "az-count" {}
 
 variable "expose_node" {}
 
@@ -25,7 +25,7 @@ variable "subnet_address_prefix" {
 }
 
 variable "rules" {
-  type = "list"
+  type = list
   default = []
 }
 
